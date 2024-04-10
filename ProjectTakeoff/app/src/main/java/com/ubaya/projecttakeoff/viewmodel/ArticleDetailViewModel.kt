@@ -30,7 +30,7 @@ class ArticleDetailViewModel(application: Application): AndroidViewModel(applica
             val jsonObject = jsonArray.getJSONObject(0)
             val result = Gson().fromJson<Article>(jsonObject.toString(), sTypeArticle)
             articleLD.value = result as Article
-            Log.d("articlereadresult", result.toString())
+//            Log.d("articlereadresult", result.toString())
 
             articleContentLD.value = paginateContent(result.content, 1)
         },
