@@ -20,7 +20,7 @@ class ArticleListViewModel(application: Application): AndroidViewModel(applicati
 
     fun refresh(){
         queue = Volley.newRequestQueue(getApplication())
-        val url = ""
+        val url = "http://10.0.2.2/ANMP/ProjectTakeoff/read_articles.php"
         val stringRequest = StringRequest(Request.Method.GET, url, {
             val sTypeArticle = object: TypeToken<List<Article>>(){}.type
             val result = Gson().fromJson<List<Article>>(it, sTypeArticle)

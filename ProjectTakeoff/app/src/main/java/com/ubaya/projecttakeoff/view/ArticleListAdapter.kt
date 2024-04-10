@@ -1,5 +1,6 @@
 package com.ubaya.projecttakeoff.view
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -32,16 +33,22 @@ class ArticleListAdapter(val articleList: ArrayList<Article>)
             picasso.listener{picasso, uri, exception ->
                 exception.printStackTrace()
             }
-            picasso.build().load(articleList[position].image_url).into(imgArticleImage, object: Callback {
+            picasso.build().load("http://10.0.2.2/ANMP/ProjectTakeoff/images/" + (articleList[position].image_url)).into(imgArticleImage, object: Callback {
                 override fun onSuccess(){
                     
                 }
 
                 override fun onError(e: Exception?) {
-                    TODO("Not yet implemented")
+                    Log.e("picasso_error", e.toString())
                 }
             })
         }
+    }
+
+    fun updateArticleList(newArticleList: ArrayList<Article>){
+        articleList.clear()
+        articleList.addAll(newArticleList)
+        notifyDataSetChanged()
     }
 
 
