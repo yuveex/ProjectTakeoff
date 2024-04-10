@@ -9,10 +9,18 @@
         android:id="@+id/readArticleFragment"
         android:name="com.ubaya.projecttakeoff.view.ReadArticleFragment"
         android:label="fragment_read_article"
-        tools:layout="@layout/fragment_read_article" />
+        tools:layout="@layout/fragment_read_article" >
+        <argument
+            android:name="article_id"
+            app:argType="string" />
+    </fragment>
     <fragment
         android:id="@+id/articleListFragment"
         android:name="com.ubaya.projecttakeoff.view.ArticleListFragment"
         android:label="fragment_article_list"
-        tools:layout="@layout/fragment_article_list" />
+        tools:layout="@layout/fragment_article_list" >
+        <action
+            android:id="@+id/action_articleListFragment_to_readArticleFragment"
+            app:destination="@id/readArticleFragment" />
+    </fragment>
 </navigation>
