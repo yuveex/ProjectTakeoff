@@ -7,4 +7,5 @@ data class Article(
     var summary: String,
     var image_url: String,
     var author_id: String,
+    var author_name: String,
 )
