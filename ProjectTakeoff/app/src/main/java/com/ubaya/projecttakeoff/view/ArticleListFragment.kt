@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.LinearLayout
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ubaya.projecttakeoff.R
 import com.ubaya.projecttakeoff.databinding.FragmentArticleListBinding
@@ -44,7 +45,10 @@ class ArticleListFragment : Fragment() {
 
         observeViewModel()
 
-
+        binding.fabUserProfile.setOnClickListener{
+            val action = ArticleListFragmentDirections.actionArticleListFragmentToProfileFragment()
+            Navigation.findNavController(it).navigate(action)
+        }
     }
 
     private fun observeViewModel() {

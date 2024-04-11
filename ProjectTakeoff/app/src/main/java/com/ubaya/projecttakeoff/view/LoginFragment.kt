@@ -6,9 +6,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.view.isVisible
+import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.ubaya.projecttakeoff.R
 import com.ubaya.projecttakeoff.databinding.FragmentLoginBinding
 import com.ubaya.projecttakeoff.viewmodel.UserViewModel
@@ -27,6 +30,8 @@ class LoginFragment : Fragment() {
     private lateinit var binding: FragmentLoginBinding
     private lateinit var viewModel: UserViewModel
 
+    private var loginStatus: Boolean = false
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -40,25 +45,13 @@ class LoginFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel = ViewModelProvider(this).get(UserViewModel::class.java)
+        viewModel = (activity as MainActivity).getUserViewModel()
+
+        observeViewModel()
 
         with(binding){
             btnLogin.setOnClickListener {
                 viewModel.login(txtInputUsername.text.toString(), txtInputPassword.text.toString())
-
-                viewModel.loginStatusLD.observe(viewLifecycleOwner, Observer {
-                    if(it == true){
-                        Toast.makeText(requireContext(), "Login successful",
-                            Toast.LENGTH_SHORT).show()
-                        val action = LoginFragmentDirections.actionLoginFragmentToArticleListFragment()
-                        Navigation.findNavController(view).navigate(action)
-                    }
-                    else{
-                        Toast.makeText(requireContext(), "Login Failed! Please check your username and password",
-                            Toast.LENGTH_LONG).show()
-                    }
-                })
-
             }
 
             btnRegister.setOnClickListener {
@@ -67,6 +60,29 @@ class LoginFragment : Fragment() {
             }
         }
 
+    }
+
+    override fun onResume() {
+        super.onResume()
+        loginStatus = false
+        viewModel = (activity as MainActivity).getUserViewModel()
+    }
+
+    fun observeViewModel(){
+        viewModel.loginStatusLD.observe(viewLifecycleOwner, Observer {
+            loginStatus = it
+
+            if(loginStatus == true){
+                Toast.makeText(requireContext(), "Login successful",
+                    Toast.LENGTH_SHORT).show()
+                val action = LoginFragmentDirections.actionLoginFragmentToArticleListFragment()
+                Navigation.findNavController(requireView()).navigate(action)
+            }
+            else{
+                Toast.makeText(requireContext(), "Login Failed! Please check your username and password",
+                    Toast.LENGTH_LONG).show()
+            }
+        })
     }
 
 }

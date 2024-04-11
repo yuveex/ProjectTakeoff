@@ -12,13 +12,11 @@
 
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
-            android:layout_height="0dp"
+            android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
-            android:layout_marginBottom="16dp"
             app:cardCornerRadius="16dp"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -29,8 +27,8 @@
 
                 <androidx.cardview.widget.CardView
                     android:id="@+id/cardProfilePic"
-                    android:layout_width="160dp"
-                    android:layout_height="160dp"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
                     android:layout_marginTop="16dp"
                     app:cardCornerRadius="100dp"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -131,7 +129,7 @@
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/textInputLayout10"
-                    android:layout_width="0dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="16dp"
@@ -141,12 +139,11 @@
                     app:layout_constraintTop_toBottomOf="@+id/textInputLayout9">
 
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/txtInputPassword"
+                        android:id="@+id/txtInputProfilePicUrl"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/montserrat"
-                        android:hint="Password"
-                        android:password="true" />
+                        android:hint="Profile Picture URL" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <Button
@@ -155,11 +152,13 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="24dp"
                     android:layout_marginEnd="16dp"
+                    android:layout_marginBottom="16dp"
                     android:fontFamily="@font/montserrat_medium"
                     android:text="Update"
                     android:textSize="20sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textInputLayout10" />
+                    app:layout_constraintTop_toBottomOf="@+id/btnChangePassword" />
 
                 <Button
                     android:id="@+id/btnLogout"
@@ -168,9 +167,27 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="24dp"
+                    android:layout_marginBottom="16dp"
                     android:fontFamily="@font/montserrat_medium"
                     android:text="Logout"
                     android:textSize="20sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/btnChangePassword" />
+
+                <Button
+                    android:id="@+id/btnChangePassword"
+                    style="@style/Widget.Material3.Button.OutlinedButton"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:fontFamily="@font/montserrat_medium"
+                    android:text="Change Password"
+                    android:textSize="20sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="1.0"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/textInputLayout10" />
 

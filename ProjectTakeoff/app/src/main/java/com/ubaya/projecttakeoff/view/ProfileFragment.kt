@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.Navigation
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
 import com.ubaya.projecttakeoff.R
@@ -29,6 +30,8 @@ class ProfileFragment : Fragment() {
     private lateinit var binding: FragmentProfileBinding
     private lateinit var viewModel: UserViewModel
 
+    private var userId: String = ""
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -42,18 +45,35 @@ class ProfileFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel = ViewModelProvider(this).get(UserViewModel::class.java)
+        viewModel = (activity as MainActivity).getUserViewModel()
 
         observeViewModel()
+
+        with(binding){
+            btnUpdate.setOnClickListener {
+                viewModel.updateUser(
+                    txtInputEmail.text.toString(), txtInputUsername.text.toString(), txtInputFName.text.toString(),
+                    txtInputLName.text.toString(), txtInputProfilePicUrl.text.toString(), userId
+                )
+            }
+        }
+
+        binding.btnLogout.setOnClickListener {
+            viewModel.clearLiveData()
+            Navigation.findNavController(view).popBackStack(R.id.loginFragment, false)
+        }
     }
 
     private fun observeViewModel(){
         viewModel.userLD.observe(viewLifecycleOwner, Observer {
             with(binding){
+                Log.d("userprofiledetail", it.toString())
                 txtInputEmail.setText(it.email)
                 txtInputFName.setText(it.first_name)
                 txtInputLName.setText(it.last_name)
                 txtInputUsername.setText(it.username)
+                txtInputProfilePicUrl.setText(it.profile_picture)
+                userId = it.id
 
                 val picasso = Picasso.Builder(requireContext())
                 picasso.listener{picasso, uri, exception ->
