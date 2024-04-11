@@ -60,7 +60,11 @@ class ProfileFragment : Fragment() {
 
         binding.btnLogout.setOnClickListener {
             viewModel.clearLiveData()
-            Navigation.findNavController(view).popBackStack(R.id.loginFragment, false)
+
+            val action = ProfileFragmentDirections.actionProfileFragmentToLoginFragment()
+            Navigation.findNavController(requireView()).navigate(action)
+
+//            Navigation.findNavController(view).popBackStack(R.id.loginFragment, false)
         }
     }
 
