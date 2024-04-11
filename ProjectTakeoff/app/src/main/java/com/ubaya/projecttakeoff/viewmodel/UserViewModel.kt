@@ -12,11 +12,13 @@ import com.android.volley.toolbox.Volley
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.ubaya.projecttakeoff.model.User
+import org.json.JSONArray
 import org.json.JSONObject
 
 class UserViewModel(application: Application): AndroidViewModel(application) {
     val userLD = MutableLiveData<User>()
     val loginStatusLD = MutableLiveData<Boolean>()
+    val registerStatusLD = MutableLiveData<Boolean>()
 
     val TAG = "volleyUserTag"
     private var queue: RequestQueue? = null
@@ -56,6 +58,41 @@ class UserViewModel(application: Application): AndroidViewModel(application) {
                 val params = HashMap<String, String>()
                 params["username"] = username
                 params["password"] = password
+                return params
+            }
+        }
+
+        stringRequest.tag = TAG
+        queue?.add(stringRequest)
+    }
+
+    fun createUser(email: String, username: String, first_name: String,
+                   last_name: String, password: String, profile_picture: String){
+        queue = Volley.newRequestQueue(getApplication())
+        val url = "http://10.0.2.2/ANMP/ProjectTakeoff/create_user.php"
+        val stringRequest = object: StringRequest(Request.Method.POST, url,
+        {
+            val response = JSONObject(it)
+            val result = response.getString("result")
+            if(result == "OK"){
+                registerStatusLD.value = true
+            }
+            else{
+                registerStatusLD.value = false
+            }
+
+        },
+        {
+            Log.e("userregistervolley", it.toString())
+        }){
+            override fun getParams(): MutableMap<String, String>? {
+                val params = HashMap<String, String>()
+                params["email"] = email
+                params["username"] = username
+                params["first_name"] = first_name
+                params["last_name"] = last_name
+                params["password"] = password
+                params["profile_picture"] = profile_picture
                 return params
             }
         }
