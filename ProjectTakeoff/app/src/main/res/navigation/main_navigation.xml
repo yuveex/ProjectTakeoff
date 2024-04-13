@@ -57,7 +57,21 @@
         <action
             android:id="@+id/action_profileFragment_to_loginFragment"
             app:destination="@id/loginFragment"
-            app:popUpTo="@id/profileFragment"
+            app:popUpTo="@id/articleListFragment"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_profileFragment_to_changePassFragment"
+            app:destination="@id/changePassFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/changePassFragment"
+        android:name="com.ubaya.projecttakeoff.view.ChangePassFragment"
+        android:label="fragment_change_pass"
+        tools:layout="@layout/fragment_change_pass" >
+        <action
+            android:id="@+id/action_changePassFragment_to_loginFragment"
+            app:destination="@id/loginFragment"
+            app:popUpTo="@id/articleListFragment"
             app:popUpToInclusive="true" />
     </fragment>
 </navigation>

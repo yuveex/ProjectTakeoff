@@ -80,7 +80,7 @@ class LoginFragment : Fragment() {
             }
             else{
                 Toast.makeText(requireContext(), "Login Failed! Please check your username and password",
-                    Toast.LENGTH_LONG).show()
+                    Toast.LENGTH_SHORT).show()
             }
         })
     }

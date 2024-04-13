@@ -20,6 +20,7 @@ class UserViewModel(application: Application): AndroidViewModel(application) {
     var loginStatusLD = MutableLiveData<Boolean>()
     var registerStatusLD = MutableLiveData<Boolean>()
     var updateStatusLD = MutableLiveData<Boolean>()
+    var passUpdateStatusLD = MutableLiveData<Boolean>()
 
     val TAG = "volleyUserTag"
     private var queue: RequestQueue? = null
@@ -171,11 +172,42 @@ class UserViewModel(application: Application): AndroidViewModel(application) {
         queue?.add(stringRequest)
     }
 
+    fun changePassword(old_password: String, new_password: String, user_id: String) {
+        queue = Volley.newRequestQueue(getApplication())
+        val url = "http://10.0.2.2/ANMP/ProjectTakeoff/update_user_password.php"
+        val stringRequest = object : StringRequest(Request.Method.POST, url,
+            {
+                val response = JSONObject(it)
+                val result = response.getString("result")
+                if (result == "OK") {
+                    passUpdateStatusLD.value = true
+                    readUser(user_id)
+                } else {
+                    passUpdateStatusLD.value = false
+                }
+            },
+            {
+                Log.e("passupdatevolley", it.toString())
+            }) {
+            override fun getParams(): MutableMap<String, String>? {
+                val params = HashMap<String, String>()
+                params["old_password"] = old_password
+                params["new_password"] = new_password
+                params["user_id"] = user_id
+                return params
+            }
+        }
+
+        stringRequest.tag = TAG
+        queue?.add(stringRequest)
+    }
+
     fun clearLiveData(){
         userLD = MutableLiveData<User>()
         loginStatusLD = MutableLiveData<Boolean>()
         registerStatusLD = MutableLiveData<Boolean>()
         updateStatusLD = MutableLiveData<Boolean>()
+        passUpdateStatusLD = MutableLiveData<Boolean>()
     }
 
     override fun onCleared() {

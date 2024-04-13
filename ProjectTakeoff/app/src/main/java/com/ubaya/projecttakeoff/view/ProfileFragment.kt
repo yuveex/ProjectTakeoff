@@ -56,6 +56,11 @@ class ProfileFragment : Fragment() {
                     txtInputLName.text.toString(), txtInputProfilePicUrl.text.toString(), userId
                 )
             }
+
+            btnChangePassword.setOnClickListener {
+                val action = ProfileFragmentDirections.actionProfileFragmentToChangePassFragment()
+                Navigation.findNavController(it).navigate(action)
+            }
         }
 
         binding.btnLogout.setOnClickListener {
