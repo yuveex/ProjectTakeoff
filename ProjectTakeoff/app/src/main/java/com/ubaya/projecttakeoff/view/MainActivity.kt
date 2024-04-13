@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.lifecycle.ViewModelProvider
 import com.ubaya.projecttakeoff.R
+import com.ubaya.projecttakeoff.databinding.ActivityMainBinding
 import com.ubaya.projecttakeoff.viewmodel.UserViewModel
 
 class MainActivity : AppCompatActivity() {
