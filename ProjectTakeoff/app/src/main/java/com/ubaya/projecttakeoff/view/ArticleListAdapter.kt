@@ -1,7 +1,9 @@
 package com.ubaya.projecttakeoff.view
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
@@ -28,20 +30,34 @@ class ArticleListAdapter(val articleList: ArrayList<Article>)
             txtAuthor.text = articleList[position].author_name
             txtSummary.text = articleList[position].summary
 
+            btnRead.setOnClickListener {
+                val action = ArticleListFragmentDirections.actionArticleListFragmentToReadArticleFragment(articleList[position].id)
+                Navigation.findNavController(it).navigate(action)
+            }
+
             val picasso = Picasso.Builder(holder.itemView.context)
             picasso.listener{picasso, uri, exception ->
                 exception.printStackTrace()
             }
-            picasso.build().load(articleList[position].image_url).into(imgArticleImage, object: Callback {
+
+            var imgUrl = "http://10.0.2.2/ANMP/ProjectTakeoff/images/" + (articleList[position].image_url)
+            picasso.build().load(imgUrl).into(imgArticleImage, object: Callback {
                 override fun onSuccess(){
                     
                 }
 
                 override fun onError(e: Exception?) {
-                    TODO("Not yet implemented")
+                    Log.e("picasso_error", e.toString() + imgUrl)
                 }
             })
+            Log.d("picasso_url", imgUrl)
         }
+    }
+
+    fun updateArticleList(newArticleList: ArrayList<Article>){
+        articleList.clear()
+        articleList.addAll(newArticleList)
+        notifyDataSetChanged()
     }
 
 

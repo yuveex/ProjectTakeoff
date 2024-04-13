@@ -15,20 +15,20 @@ import com.ubaya.projecttakeoff.model.Article
 class ArticleListViewModel(application: Application): AndroidViewModel(application) {
     val articlesLD = MutableLiveData<ArrayList<Article>>()
 
-    val TAG = "volleyArticleTag"
+    val TAG = "volleyArticleListTag"
     private var queue: RequestQueue? = null
 
     fun refresh(){
         queue = Volley.newRequestQueue(getApplication())
-        val url = ""
+        val url = "http://10.0.2.2/ANMP/ProjectTakeoff/read_articles.php"
         val stringRequest = StringRequest(Request.Method.GET, url, {
-            val sTypeArticle = object: TypeToken<List<Article>>(){}.type
-            val result = Gson().fromJson<List<Article>>(it, sTypeArticle)
+            val sTypeArticles = object: TypeToken<List<Article>>(){}.type
+            val result = Gson().fromJson<List<Article>>(it, sTypeArticles)
             articlesLD.value = result as ArrayList<Article>
-//            Log.e("articleresult", result.toString())
+//            Log.d("articlesresult", result.toString())
         },
         {
-            Log.e("articlevolley", it.toString())
+            Log.e("articlesvolley", it.toString())
         })
 
         stringRequest.tag = TAG
