@@ -23,5 +23,5 @@ interface ArticleDAO {
     fun update(article: Article)
 
     @Delete
-    fun deleteTodo(vararg article: Article)
+    fun deleteArticle(vararg article: Article)
 }

@@ -6,9 +6,6 @@ import androidx.room.PrimaryKey
 
 @Entity
 data class Article(
-
-    @PrimaryKey(autoGenerate = true)
-    var id: String,
     @ColumnInfo(name = "title")
     var title: String,
     @ColumnInfo(name = "content")
@@ -20,5 +17,8 @@ data class Article(
     @ColumnInfo(name = "author_id")
     var author_id: String,
     @ColumnInfo(name = "author_name")
-    var author_name: String,
-)
+    var author_name: String?,
+){
+    @PrimaryKey(autoGenerate = true)
+    var id: Int = 0
+}

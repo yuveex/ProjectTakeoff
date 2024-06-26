@@ -28,7 +28,7 @@ class ChangePassFragment : Fragment() {
     private lateinit var binding: FragmentChangePassBinding
     private lateinit var viewModel: UserViewModel
 
-    private var userId: String = ""
+    private var userId: Int = 0
 
 
     override fun onCreateView(
@@ -50,7 +50,9 @@ class ChangePassFragment : Fragment() {
 
         with(binding){
             btnConfirmChangePass.setOnClickListener {
-                viewModel.changePassword(txtInputOldPassword.text.toString(), txtInputNewPassword.text.toString(), userId)
+
+                Log.e("useridlog", userId.toString())
+                viewModel.updatePassword(userId, txtInputOldPassword.text.toString(), txtInputNewPassword.text.toString())
             }
         }
     }

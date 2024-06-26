@@ -43,7 +43,7 @@ class ReadArticleFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        var articleId = "1"
+        var articleId = 0
 
         arguments?.let{
             articleId = ReadArticleFragmentArgs.fromBundle(requireArguments()).articleId

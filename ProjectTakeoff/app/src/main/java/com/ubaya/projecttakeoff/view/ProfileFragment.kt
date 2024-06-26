@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
@@ -13,6 +14,7 @@ import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
 import com.ubaya.projecttakeoff.R
 import com.ubaya.projecttakeoff.databinding.FragmentProfileBinding
+import com.ubaya.projecttakeoff.model.User
 import com.ubaya.projecttakeoff.viewmodel.UserViewModel
 import java.lang.Exception
 
@@ -30,7 +32,7 @@ class ProfileFragment : Fragment() {
     private lateinit var binding: FragmentProfileBinding
     private lateinit var viewModel: UserViewModel
 
-    private var userId: String = ""
+    private var userId: Int = 0
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -51,10 +53,12 @@ class ProfileFragment : Fragment() {
 
         with(binding){
             btnUpdate.setOnClickListener {
-                viewModel.updateUser(
-                    txtInputEmail.text.toString(), txtInputUsername.text.toString(), txtInputFName.text.toString(),
-                    txtInputLName.text.toString(), txtInputProfilePicUrl.text.toString(), userId
-                )
+                var user = User(txtInputEmail.text.toString(), txtInputUsername.text.toString(), txtInputFName.text.toString(),
+                    txtInputLName.text.toString(), txtInputProfilePicUrl.text.toString())
+                //Since the user id is not inside the constructor.
+                user.id = userId
+                viewModel.updateUser(user)
+                Toast.makeText(requireContext(), "Profile Updated!", Toast.LENGTH_SHORT).show()
             }
 
             btnChangePassword.setOnClickListener {

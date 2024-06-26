@@ -14,6 +14,7 @@ import androidx.navigation.ui.NavigationUI
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.ubaya.projecttakeoff.R
 import com.ubaya.projecttakeoff.databinding.FragmentRegisterBinding
+import com.ubaya.projecttakeoff.model.User
 import com.ubaya.projecttakeoff.viewmodel.UserViewModel
 
 // TODO: Rename parameter arguments, choose names that match
@@ -49,22 +50,24 @@ class RegisterFragment : Fragment() {
             btnRegisterUser.setOnClickListener {
 
                 if(txtInputPassword.text.toString() == txtInputConfPassword.text.toString()){
-                    viewModel.createUser(txtInputEmail.text.toString(), txtInputUsername.text.toString(), txtInputFName.text.toString(),
-                        txtInputLName.text.toString(), txtInputPassword.text.toString(), txtInputProfilePicUrl.text.toString())
+                    var user = User(txtInputEmail.text.toString(), txtInputUsername.text.toString(), txtInputFName.text.toString(),
+                        txtInputLName.text.toString(), txtInputProfilePicUrl.text.toString(), txtInputPassword.text.toString())
+                    viewModel.addUser(user)
+                    Toast.makeText(requireContext(), "Account successfully created!", Toast.LENGTH_SHORT).show()
 
-                    viewModel.registerStatusLD.observe(viewLifecycleOwner, Observer {
-                        if(it == true){
-                            Toast.makeText(requireContext(), "Account successfully created!",
-                                Toast.LENGTH_SHORT).show()
-//                            val action = RegisterFragmentDirections.actionRegisterFragmentToLoginFragment()
-//                            Navigation.findNavController(view).navigate(action)
-                            Navigation.findNavController(view).navigateUp()
-                        }
-                        else{
-                            Toast.makeText(requireContext(), "Registration Failed! Please again later",
-                                Toast.LENGTH_SHORT).show()
-                        }
-                    })
+//                    viewModel.registerStatusLD.observe(viewLifecycleOwner, Observer {
+//                        if(it == true){
+//                            Toast.makeText(requireContext(), "Account successfully created!",
+//                                Toast.LENGTH_SHORT).show()
+////                            val action = RegisterFragmentDirections.actionRegisterFragmentToLoginFragment()
+////                            Navigation.findNavController(view).navigate(action)
+//                            Navigation.findNavController(view).navigateUp()
+//                        }
+//                        else{
+//                            Toast.makeText(requireContext(), "Registration Failed! Please again later",
+//                                Toast.LENGTH_SHORT).show()
+//                        }
+//                    })
                 }
                 else{
                     Toast.makeText(requireContext(), "Please ensure your confirmation password is correct!",
