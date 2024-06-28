@@ -45,10 +45,10 @@ class ArticleListFragment : Fragment() {
 
         observeViewModel()
 
-        binding.fabUserProfile.setOnClickListener{
-            val action = ArticleListFragmentDirections.actionArticleListFragmentToProfileFragment()
-            Navigation.findNavController(it).navigate(action)
-        }
+//        binding.fabUserProfile.setOnClickListener{
+//            val action = ArticleListFragmentDirections.actionArticleListFragmentToProfileFragment()
+//            Navigation.findNavController(it).navigate(action)
+//        }
     }
 
     private fun observeViewModel() {
