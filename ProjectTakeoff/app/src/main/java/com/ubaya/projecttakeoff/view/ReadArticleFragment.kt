@@ -25,7 +25,7 @@ private const val ARG_PARAM2 = "param2"
  * Use the [ReadArticleFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class ReadArticleFragment : Fragment() {
+class ReadArticleFragment : Fragment(), PageButtonClickListener {
     private lateinit var binding: FragmentReadArticleBinding
     private lateinit var viewModel: ArticleDetailViewModel
     private var currentPageIndex: Int = 0
@@ -43,7 +43,9 @@ class ReadArticleFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        var articleId = "1"
+        var articleId = 0
+
+        binding.pageButtonListener = this
 
         arguments?.let{
             articleId = ReadArticleFragmentArgs.fromBundle(requireArguments()).articleId
@@ -53,66 +55,80 @@ class ReadArticleFragment : Fragment() {
         viewModel.refresh(articleId)
 
         observeViewModel()
+        updateButtonStatus()
 
-        with(binding){
+//        with(binding){
+//
+//            updateButtonStatus()
+//
+//            btnPrev.setOnClickListener{
+//                if(currentPageIndex > 0){
+//                    currentPageIndex -= 1
+//                }
+//                observeViewModel()
+//                updateButtonStatus()
+//            }
+//
+//            btnNext.setOnClickListener {
+//                if(currentPageIndex+1 < articlePageCount){
+//                    currentPageIndex += 1
+//                }
+//                observeViewModel()
+//                updateButtonStatus()
+//            }
+//        }
+    }
 
-            updateButtonStatus()
-
-            btnPrev.setOnClickListener{
-                if(currentPageIndex > 0){
-                    currentPageIndex -= 1
-                }
-                observeViewModel()
-                updateButtonStatus()
-            }
-
-            btnNext.setOnClickListener {
-                if(currentPageIndex+1 < articlePageCount){
-                    currentPageIndex += 1
-                }
-                observeViewModel()
-                updateButtonStatus()
-            }
+    override fun onNextClick(view: View) {
+        if(currentPageIndex+1 < articlePageCount){
+            currentPageIndex += 1
         }
+        observeViewModel()
+        updateButtonStatus()
+    }
+
+    override fun onPreviousClick(view: View) {
+        if(currentPageIndex > 0){
+            currentPageIndex -= 1
+        }
+        observeViewModel()
+        updateButtonStatus()
     }
 
     private fun observeViewModel(){
         viewModel.articleLD.observe(viewLifecycleOwner, Observer {
-            with(binding){
-                txtTitle.text = it.title
-                txtAuthor.text = it.author_name
+            binding.article = it
 
-                val picasso = Picasso.Builder(requireContext())
-                picasso.listener{picasso, uri, exception ->
-                    exception.printStackTrace()
-                }
 
-                var imgUrl = "http://10.0.2.2/ANMP/ProjectTakeoff/images/" + (it.image_url)
-                picasso.build().load(imgUrl).into(imgArticleImage, object: Callback {
-                    override fun onSuccess(){
-
-                    }
-
-                    override fun onError(e: Exception?) {
-                        Log.e("picasso_error", e.toString() + imgUrl)
-                    }
-                })
-            }
+//            with(binding){
+//                txtTitle.text = it.title
+//                txtAuthor.text = it.author_name
+//
+//                val picasso = Picasso.Builder(requireContext())
+//                picasso.listener{picasso, uri, exception ->
+//                    exception.printStackTrace()
+//                }
+//
+//                var imgUrl = "http://10.0.2.2/ANMP/ProjectTakeoff/images/" + (it.image_url)
+//                picasso.build().load(imgUrl).into(imgArticleImage, object: Callback {
+//                    override fun onSuccess(){
+//
+//                    }
+//
+//                    override fun onError(e: Exception?) {
+//                        Log.e("picasso_error", e.toString() + imgUrl)
+//                    }
+//                })
+//            }
         })
 
-//        Log.d("current_page", currentPageIndex.toString()
-//                + "|||" + articlePageCount.toString())
-
         viewModel.articleContentLD.observe(viewLifecycleOwner, Observer {
-            with(binding){
-                txtContent.text = it[currentPageIndex]
-            }
-
+            binding.currentContent = it[currentPageIndex]
+//            with(binding){
+//                txtContent.text = it[currentPageIndex]
+//            }
             articlePageCount = it.size
             updateButtonStatus()
-
-//            Log.d("pages_detail", it.toString()
-//                    + "|||" + articlePageCount)
         })
     }
 

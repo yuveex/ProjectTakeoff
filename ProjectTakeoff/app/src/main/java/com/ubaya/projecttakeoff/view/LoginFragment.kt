@@ -26,7 +26,7 @@ private const val ARG_PARAM2 = "param2"
  * Use the [LoginFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class LoginFragment : Fragment() {
+class LoginFragment : Fragment(), LoginButtonClickListener {
     private lateinit var binding: FragmentLoginBinding
     private lateinit var viewModel: UserViewModel
 
@@ -45,21 +45,37 @@ class LoginFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        binding.loginListener = this
+
         viewModel = (activity as MainActivity).getUserViewModel()
 
         observeViewModel()
 
-        with(binding){
-            btnLogin.setOnClickListener {
-                viewModel.login(txtInputUsername.text.toString(), txtInputPassword.text.toString())
-            }
+//        with(binding){
+//            btnLogin.setOnClickListener {
+//                viewModel.login(txtInputUsername.text.toString(), txtInputPassword.text.toString())
+//            }
+//
+//            btnRegister.setOnClickListener {
+//                val action = LoginFragmentDirections.actionLoginFragmentToRegisterFragment()
+//                Navigation.findNavController(it).navigate(action)
+//            }
+//        }
 
-            btnRegister.setOnClickListener {
-                val action = LoginFragmentDirections.actionLoginFragmentToRegisterFragment()
-                Navigation.findNavController(it).navigate(action)
-            }
+    }
+
+    override fun onLoginClick(view: View) {
+        val username = binding.username
+        val password = binding.password
+
+        if (username != null && password != null) {
+            viewModel.login(username, password)
         }
+    }
 
+    override fun onRegisterClick(view: View) {
+        val action = LoginFragmentDirections.actionLoginFragmentToRegisterFragment()
+        Navigation.findNavController(view).navigate(action)
     }
 
     override fun onResume() {

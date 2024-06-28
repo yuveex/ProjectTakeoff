@@ -12,7 +12,7 @@
         tools:layout="@layout/fragment_read_article" >
         <argument
             android:name="article_id"
-            app:argType="string" />
+            app:argType="integer" />
     </fragment>
     <fragment
         android:id="@+id/articleListFragment"

@@ -7,10 +7,7 @@ import androidx.room.PrimaryKey
 @Entity
 data class User(
 
-    @PrimaryKey (autoGenerate = true)
-    var id: String,
-
-    @ColumnInfo(name = "title")
+    @ColumnInfo(name = "email")
     var email: String,
     @ColumnInfo(name = "username")
     var username: String,
@@ -19,5 +16,11 @@ data class User(
     @ColumnInfo(name = "last_name")
     var last_name: String,
     @ColumnInfo(name = "profile_picture")
-    var profile_picture: String
-)
+    var profile_picture: String,
+    // Password is left empty and will not be retrieved. Defined only to be stored in DB
+    @ColumnInfo(name = "password")
+    var password: String? = null,
+){
+    @PrimaryKey (autoGenerate = true)
+    var id: Int = 0
+}

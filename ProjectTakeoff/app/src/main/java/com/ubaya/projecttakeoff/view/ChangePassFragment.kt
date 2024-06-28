@@ -24,11 +24,11 @@ import java.lang.Exception
  * Use the [ChangePassFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class ChangePassFragment : Fragment() {
+class ChangePassFragment : Fragment(), ChangePassButtonClickListener {
     private lateinit var binding: FragmentChangePassBinding
     private lateinit var viewModel: UserViewModel
 
-    private var userId: String = ""
+    private var userId: Int = 0
 
 
     override fun onCreateView(
@@ -44,36 +44,49 @@ class ChangePassFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        binding.changePassListener = this
+
         viewModel = (activity as  MainActivity).getUserViewModel()
 
         observeViewModel()
 
-        with(binding){
-            btnConfirmChangePass.setOnClickListener {
-                viewModel.changePassword(txtInputOldPassword.text.toString(), txtInputNewPassword.text.toString(), userId)
-            }
+//        with(binding){
+//            btnConfirmChangePass.setOnClickListener {
+//                viewModel.updatePassword(userId, txtInputOldPassword.text.toString(), txtInputNewPassword.text.toString())
+//            }
+//        }
+    }
+
+    override fun onChangePassClick(view: View) {
+
+        val oldPass = binding.oldPassword
+        val newPass = binding.newPassword
+
+        if (oldPass != null && newPass != null) {
+            viewModel.updatePassword(userId, oldPass, newPass)
         }
     }
 
     fun observeViewModel(){
         viewModel.userLD.observe(viewLifecycleOwner, Observer {
+            binding.user = it
             userId = it.id
 
-            val picasso = Picasso.Builder(requireContext())
-            picasso.listener{picasso, uri, exception ->
-                exception.printStackTrace()
-            }
-
-            var imgUrl = it.profile_picture
-            picasso.build().load(imgUrl).into(binding.imgProfilePicPass, object: Callback {
-                override fun onSuccess(){
-
-                }
-
-                override fun onError(e: Exception?) {
-                    Log.e("picasso_error", e.toString() + imgUrl)
-                }
-            })
+//            val picasso = Picasso.Builder(requireContext())
+//            picasso.listener{picasso, uri, exception ->
+//                exception.printStackTrace()
+//            }
+//
+//            var imgUrl = it.profile_picture
+//            picasso.build().load(imgUrl).into(binding.imgProfilePicPass, object: Callback {
+//                override fun onSuccess(){
+//
+//                }
+//
+//                override fun onError(e: Exception?) {
+//                    Log.e("picasso_error", e.toString() + imgUrl)
+//                }
+//            })
         })
 
         viewModel.passUpdateStatusLD.observe(viewLifecycleOwner, Observer {
