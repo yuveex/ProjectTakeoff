@@ -28,7 +28,7 @@ private const val ARG_PARAM2 = "param2"
  * Use the [ProfileFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class ProfileFragment : Fragment() {
+class ProfileFragment : Fragment(), ProfileButtonClickListener {
     private lateinit var binding: FragmentProfileBinding
     private lateinit var viewModel: UserViewModel
 
@@ -47,63 +47,93 @@ class ProfileFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        binding.profileListener = this
+
         viewModel = (activity as MainActivity).getUserViewModel()
 
         observeViewModel()
 
-        with(binding){
-            btnUpdate.setOnClickListener {
-                var user = User(txtInputEmail.text.toString(), txtInputUsername.text.toString(), txtInputFName.text.toString(),
-                    txtInputLName.text.toString(), txtInputProfilePicUrl.text.toString())
-                //Since the user id is not inside the constructor.
-                user.id = userId
-                viewModel.updateUser(user)
-                Toast.makeText(requireContext(), "Profile Updated!", Toast.LENGTH_SHORT).show()
-            }
+//        with(binding){
+//            btnUpdate.setOnClickListener {
+//                var user = User(txtInputEmail.text.toString(), txtInputUsername.text.toString(), txtInputFName.text.toString(),
+//                    txtInputLName.text.toString(), txtInputProfilePicUrl.text.toString())
+//                //Since the user id is not inside the constructor.
+//                user.id = userId
+//                viewModel.updateUser(user)
+//                Toast.makeText(requireContext(), "Profile Updated!", Toast.LENGTH_SHORT).show()
+//            }
+//
+//            btnChangePassword.setOnClickListener {
+//                val action = ProfileFragmentDirections.actionProfileFragmentToChangePassFragment()
+//                Navigation.findNavController(it).navigate(action)
+//            }
+//        }
+//
+//        binding.btnLogout.setOnClickListener {
+//            viewModel.clearLiveData()
+//
+//            val action = ProfileFragmentDirections.actionProfileFragmentToLoginFragment()
+//            Navigation.findNavController(requireView()).navigate(action)
+//
+////            Navigation.findNavController(view).popBackStack(R.id.loginFragment, false)
+//        }
+    }
 
-            btnChangePassword.setOnClickListener {
-                val action = ProfileFragmentDirections.actionProfileFragmentToChangePassFragment()
-                Navigation.findNavController(it).navigate(action)
-            }
+    override fun onUpdateClick(view: View) {
+        binding.user?.let {
+            viewModel.updateUser(it)
+            Toast.makeText(requireContext(), "Profile Updated!", Toast.LENGTH_SHORT).show()
         }
+    }
 
-        binding.btnLogout.setOnClickListener {
-            viewModel.clearLiveData()
+    override fun onLogoutClick(view: View) {
+        viewModel.clearLiveData()
 
-            val action = ProfileFragmentDirections.actionProfileFragmentToLoginFragment()
-            Navigation.findNavController(requireView()).navigate(action)
+        val action = ProfileFragmentDirections.actionProfileFragmentToLoginFragment()
+        Navigation.findNavController(requireView()).navigate(action)
+    }
 
-//            Navigation.findNavController(view).popBackStack(R.id.loginFragment, false)
-        }
+    override fun onChangePassClick(view: View) {
+        val action = ProfileFragmentDirections.actionProfileFragmentToChangePassFragment()
+        Navigation.findNavController(view).navigate(action)
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        observeViewModel()
     }
 
     private fun observeViewModel(){
         viewModel.userLD.observe(viewLifecycleOwner, Observer {
-            with(binding){
-                Log.d("userprofiledetail", it.toString())
-                txtInputEmail.setText(it.email)
-                txtInputFName.setText(it.first_name)
-                txtInputLName.setText(it.last_name)
-                txtInputUsername.setText(it.username)
-                txtInputProfilePicUrl.setText(it.profile_picture)
-                userId = it.id
+            binding.user = it
+            userId = it.id
 
-                val picasso = Picasso.Builder(requireContext())
-                picasso.listener{picasso, uri, exception ->
-                    exception.printStackTrace()
-                }
+//            with(binding){
+//                Log.d("userprofiledetail", it.toString())
+//                txtInputEmail.setText(it.email)
+//                txtInputFName.setText(it.first_name)
+//                txtInputLName.setText(it.last_name)
+//                txtInputUsername.setText(it.username)
+//                txtInputProfilePicUrl.setText(it.profile_picture)
+//                userId = it.id
 
-                var imgUrl = it.profile_picture
-                picasso.build().load(imgUrl).into(imgProfilePic, object: Callback {
-                    override fun onSuccess(){
-
-                    }
-
-                    override fun onError(e: Exception?) {
-                        Log.e("picasso_error", e.toString() + imgUrl)
-                    }
-                })
-            }
+//                val picasso = Picasso.Builder(requireContext())
+//                picasso.listener{picasso, uri, exception ->
+//                    exception.printStackTrace()
+//                }
+//
+//                var imgUrl = it.profile_picture
+//                picasso.build().load(imgUrl).into(imgProfilePic, object: Callback {
+//                    override fun onSuccess(){
+//
+//                    }
+//
+//                    override fun onError(e: Exception?) {
+//                        Log.e("picasso_error", e.toString() + imgUrl)
+//                    }
+//                })
+//            }
         })
     }
 }

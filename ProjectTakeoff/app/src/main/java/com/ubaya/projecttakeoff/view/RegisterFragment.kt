@@ -1,6 +1,7 @@
 package com.ubaya.projecttakeoff.view
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -27,7 +28,7 @@ private const val ARG_PARAM2 = "param2"
  * Use the [RegisterFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class RegisterFragment : Fragment() {
+class RegisterFragment : Fragment(), RegisterButtonClickListener {
     private lateinit var binding: FragmentRegisterBinding
     private lateinit var viewModel: UserViewModel
 
@@ -44,16 +45,20 @@ class RegisterFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        binding.user = User("","","","","","",)
+
+        binding.registerListener = this
+
         viewModel = ViewModelProvider(this).get(UserViewModel::class.java)
 
-        with(binding){
-            btnRegisterUser.setOnClickListener {
-
-                if(txtInputPassword.text.toString() == txtInputConfPassword.text.toString()){
-                    var user = User(txtInputEmail.text.toString(), txtInputUsername.text.toString(), txtInputFName.text.toString(),
-                        txtInputLName.text.toString(), txtInputProfilePicUrl.text.toString(), txtInputPassword.text.toString())
-                    viewModel.addUser(user)
-                    Toast.makeText(requireContext(), "Account successfully created!", Toast.LENGTH_SHORT).show()
+//        with(binding){
+//            btnRegisterUser.setOnClickListener {
+//
+//                if(txtInputPassword.text.toString() == txtInputConfPassword.text.toString()){
+//                    var user = User(txtInputEmail.text.toString(), txtInputUsername.text.toString(), txtInputFName.text.toString(),
+//                        txtInputLName.text.toString(), txtInputProfilePicUrl.text.toString(), txtInputPassword.text.toString())
+//                    viewModel.addUser(user)
+//                    Toast.makeText(requireContext(), "Account successfully created!", Toast.LENGTH_SHORT).show()
 
 //                    viewModel.registerStatusLD.observe(viewLifecycleOwner, Observer {
 //                        if(it == true){
@@ -68,14 +73,28 @@ class RegisterFragment : Fragment() {
 //                                Toast.LENGTH_SHORT).show()
 //                        }
 //                    })
-                }
-                else{
-                    Toast.makeText(requireContext(), "Please ensure your confirmation password is correct!",
-                        Toast.LENGTH_SHORT).show()
-                }
+//                }
+//                else{
+//                    Toast.makeText(requireContext(), "Please ensure your confirmation password is correct!",
+//                        Toast.LENGTH_SHORT).show()
+//                }
+//
+//
+//            }
+//        }
+    }
 
-
+    override fun onRegisterClick(view: View) {
+        if(binding.txtInputPassword.text.toString() == binding.txtInputConfPassword.text.toString()){
+            Log.e("userlog", binding.user.toString())
+            binding.user?.let {
+                viewModel.addUser(it)
+                Toast.makeText(requireContext(), "Account successfully created!", Toast.LENGTH_SHORT).show()
             }
+        }
+        else{
+            Toast.makeText(requireContext(), "Please ensure your confirmation password is correct!",
+                Toast.LENGTH_SHORT).show()
         }
     }
 }

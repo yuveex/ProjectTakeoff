@@ -30,7 +30,7 @@ class ArticleListAdapter(val articleList: ArrayList<Article>)
         holder.binding.article = articleList[position]
         holder.binding.readListener = this
 
-        with(holder.binding){
+//        with(holder.binding){
 //            txtTitle.text = articleList[position].title
 //            txtAuthor.text = articleList[position].author_name
 //            txtSummary.text = articleList[position].summary
@@ -40,23 +40,23 @@ class ArticleListAdapter(val articleList: ArrayList<Article>)
 //                Navigation.findNavController(it).navigate(action)
 //            }
 
-            val picasso = Picasso.Builder(holder.itemView.context)
-            picasso.listener{picasso, uri, exception ->
-                exception.printStackTrace()
-            }
-
-            var imgUrl = "http://10.0.2.2/ANMP/ProjectTakeoff/images/" + (articleList[position].image_url)
-            picasso.build().load(imgUrl).into(imgArticleImage, object: Callback {
-                override fun onSuccess(){
-                    
-                }
-
-                override fun onError(e: Exception?) {
-                    Log.e("picasso_error", e.toString() + imgUrl)
-                }
-            })
-            Log.d("picasso_url", imgUrl)
-        }
+//            val picasso = Picasso.Builder(holder.itemView.context)
+//            picasso.listener{picasso, uri, exception ->
+//                exception.printStackTrace()
+//            }
+//
+//            var imgUrl = "http://10.0.2.2/ANMP/ProjectTakeoff/images/" + (articleList[position].image_url)
+//            picasso.build().load(imgUrl).into(imgArticleImage, object: Callback {
+//                override fun onSuccess(){
+//
+//                }
+//
+//                override fun onError(e: Exception?) {
+//                    Log.e("picasso_error", e.toString() + imgUrl)
+//                }
+//            })
+//            Log.d("picasso_url", imgUrl)
+//        }
     }
 
     override fun onReadClick(view: View) {

@@ -98,26 +98,28 @@ class ReadArticleFragment : Fragment(), PageButtonClickListener {
     private fun observeViewModel(){
         viewModel.articleLD.observe(viewLifecycleOwner, Observer {
             binding.article = it
-            with(binding){
+
+
+//            with(binding){
 //                txtTitle.text = it.title
 //                txtAuthor.text = it.author_name
-
-                val picasso = Picasso.Builder(requireContext())
-                picasso.listener{picasso, uri, exception ->
-                    exception.printStackTrace()
-                }
-
-                var imgUrl = "http://10.0.2.2/ANMP/ProjectTakeoff/images/" + (it.image_url)
-                picasso.build().load(imgUrl).into(imgArticleImage, object: Callback {
-                    override fun onSuccess(){
-
-                    }
-
-                    override fun onError(e: Exception?) {
-                        Log.e("picasso_error", e.toString() + imgUrl)
-                    }
-                })
-            }
+//
+//                val picasso = Picasso.Builder(requireContext())
+//                picasso.listener{picasso, uri, exception ->
+//                    exception.printStackTrace()
+//                }
+//
+//                var imgUrl = "http://10.0.2.2/ANMP/ProjectTakeoff/images/" + (it.image_url)
+//                picasso.build().load(imgUrl).into(imgArticleImage, object: Callback {
+//                    override fun onSuccess(){
+//
+//                    }
+//
+//                    override fun onError(e: Exception?) {
+//                        Log.e("picasso_error", e.toString() + imgUrl)
+//                    }
+//                })
+//            }
         })
 
         viewModel.articleContentLD.observe(viewLifecycleOwner, Observer {
