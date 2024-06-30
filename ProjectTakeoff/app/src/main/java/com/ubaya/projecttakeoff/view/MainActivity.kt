@@ -21,11 +21,10 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-//        setContentView(R.layout.activity_main)
         binding = ActivityMainBinding.inflate(layoutInflater)
         val view = binding.root
         setContentView(view)
-//
+
         navController = (supportFragmentManager.findFragmentById(R.id.fragmentHost) as NavHostFragment).navController
 
         NavigationUI.setupActionBarWithNavController(this, navController, binding.drawerLayout)
@@ -36,23 +35,15 @@ class MainActivity : AppCompatActivity() {
 
         navController.addOnDestinationChangedListener { _, destination, _ ->
             when (destination.id) {
-                R.id.loginFragment -> {
+                R.id.loginFragment, R.id.registerFragment -> {
                     binding.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
                     binding.navView.visibility = View.GONE
                     binding.bottomNav.visibility = View.GONE
                     supportActionBar?.hide()
                 }
-                R.id.registerFragment -> {
-                    binding.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
-                    binding.navView.visibility = View.GONE
-                    binding.bottomNav.visibility = View.GONE
-                    supportActionBar?.show()
-                }
                 else -> {
-                    binding.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
-                    binding.navView.visibility = View.VISIBLE
                     binding.bottomNav.visibility = View.VISIBLE
-                    supportActionBar?.show()
+                    binding.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
                 }
             }
         }
@@ -61,7 +52,6 @@ class MainActivity : AppCompatActivity() {
     fun getUserViewModel(): UserViewModel{
         return userViewModel
     }
-
 
     override fun onSupportNavigateUp(): Boolean {
         return NavigationUI.navigateUp(navController, binding.drawerLayout)  || super.onSupportNavigateUp()
