@@ -20,6 +20,8 @@ data class User(
     // Password is left empty and will not be retrieved. Defined only to be stored in DB
     @ColumnInfo(name = "password")
     var password: String? = null,
+    @ColumnInfo(name = "salt")
+    var salt: String? = null,
 ){
     @PrimaryKey (autoGenerate = true)
     var id: Int = 0

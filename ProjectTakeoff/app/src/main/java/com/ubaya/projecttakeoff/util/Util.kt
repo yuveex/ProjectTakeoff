@@ -14,11 +14,18 @@ fun buildDb(context: Context): TakeoffDatabase {
 
 //MIGRATIONS HERE
 
+val MIGRATION_1_2 = object: Migration(1, 2){
+    override fun migrate(db: SupportSQLiteDatabase) {
+        db.execSQL("ALTER TABLE user ADD COLUMN salt TEXT DEFAULT NULL")
+    }
+
+}
+
 //EXAMPLE
 
 //val MIGRATION_1_2 = object: Migration(1, 2){
 //    override fun migrate(db: SupportSQLiteDatabase) {
-//        db.execSQL("ALTER TABLE article DROP COLUMN author_name")
+//        db.execSQL("ALTER TABLE article DROP COLUMN salt")
 //    }
 //
 //}
